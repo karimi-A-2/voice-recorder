@@ -1,0 +1,360 @@
+/* * {
+    padding: 0;
+    margin: 0;
+} */
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    /* overflow: hidden; */
+}
+
+.navigation-bar {
+    width: 100%;
+    height: 6%;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(250, 252, 252);
+    border-bottom: solid 1px rgb(223, 226, 225);
+}
+
+.navigation-bar ul {
+    list-style-type: none;
+    overflow: hidden;
+    margin: 1.1312217194570136vh 1.2269938650306749vw 0.5656108597285068vh 1.2269938650306749vw;
+    padding: 0;
+}
+
+.navigation-bar li {
+    float: left;
+}
+
+li a {
+    display: block;
+    padding: 1.1312217194570136vh 0.6134969325153374vw;
+    color: rgb(165, 162, 167);
+    text-align: center;
+    text-decoration: none;
+    font-family: arial, sans-serif;
+    font-size: min(1.583710407239819vh, 0.8588957055214724vw);
+    font-weight: bold;
+}
+
+li a:hover:not(.active) {
+    color: black;
+    background-color: #ddd;
+}
+
+.active {
+    color: black;
+    background-color: rgb(250, 243, 233);
+    text-decoration: solid underline rgb(213, 123, 40) 2px;
+}
+
+#main {
+    width: 100%;
+    height: 94%;
+}
+
+#content {
+    height: 100%;
+    margin: 2.262443438914027vh 1.8404907975460123vw 2.262443438914027vh 1.5337423312883436vw;
+}
+
+.record-section {
+    position: relative;
+    width: 100%;
+    height: 40%;
+    background-color: rgb(245, 248, 247);
+    border: solid 1px rgb(195, 196, 193);
+    border-radius: 4px;
+}
+
+.record-section div {
+    position: absolute;
+    top: 45%;
+    left: 40%;
+}
+
+.btn {
+    padding: 0.9049773755656109vh 0.7361963190184049vw;
+    border: 1px solid rgb(238, 118, 6);
+    border-radius: 4px;
+    font-family: arial, sans-serif;
+    font-size: min(1.583710407239819vh, 0.8588957055214724vw);
+    font-weight: bold;
+}
+
+.upload-btn {
+    color: rgb(238, 118, 6);
+    background-color: white;
+}
+
+.record-btn {
+    color: white;
+    background-color: rgb(238, 118, 6);
+    letter-spacing: 0.03067484662576687vw;
+}
+
+.stop-recording-section {
+    position: relative;
+    width: 100%;
+    height: 5%;
+}
+
+.stop-recording-section div {
+    position: absolute;
+    top: 20%;
+    font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgba(214, 52, 52, 0.994);
+}
+
+.stop-recording-section .checkbox-container {
+    display: inline;
+}
+
+.stop-recording-section input[type=number] {
+    padding: 0 0 0 0.6134969325153374vw;
+    font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
+}
+
+.play-section {
+    width: 100%;
+    height: 45%;
+    border-top: solid 1px rgb(241, 241, 238);
+}
+
+.play-section div {
+    float: left;
+    height: 100%;
+}
+
+.left-side {
+    position: relative;
+    width: 33%;
+    /* height: fit-content; */
+    background-color: rgb(245, 248, 245);
+}
+
+.left-side .add-class-btn {
+    position: absolute;
+    right: 1.2269938650306749vw;
+    top: 2.262443438914027vh;
+    color: rgb(238, 118, 6);
+    background-color: white;
+}
+
+.left-side input[type=text] {
+    position: absolute;
+    width: 70%;
+    padding: 1.1312217194570136vh 0.6134969325153374vw;
+    top: 18%;
+    right: 1.2269938650306749vw;
+    font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
+}
+
+/*  */
+.class-checkbox {
+    position: absolute;
+    top: 20%;
+    left: 3%;
+    /* height: 100%; */
+}
+
+/* copied from w3schools how to */
+/* The container */
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 2.147239263803681vw;
+    margin-bottom: 3.3936651583710407vh;
+    cursor: pointer;
+    font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2.262443438914027vh;
+    width: 1.2269938650306749vw;
+    background-color: #eee;
+    border-radius: min(0.3067484662576687vw, 0.5656108597285068vh);
+    border: 1px solid black;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox-container:hover input~.checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked~.checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked~.checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+    left: 0.36809815950920244vw;
+    top: 0.22624434389140272vh;
+    width: 0.3067484662576687vw;
+    height: 1.1312217194570136vh;
+    border: solid rgb(255, 255, 255);
+    border-width: 0 min(0.3393665158371041vh, 0.18404907975460122vw) min(0.3393665158371041vh, 0.18404907975460122vw) 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/*  */
+
+#class-types {
+    position: absolute;
+    top: 6%;
+    left: 3%;
+    font-size: min(2.3755656108597285vh, 1.2883435582822085vw);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.right-side {
+    width: 67%;
+}
+
+.right-side .title {
+    position: relative;
+    background-color: rgb(247, 247, 245);
+    margin: 2.262443438914027vh 1.2269938650306749vw 0 1.2269938650306749vw;
+    width: 100%;
+    height: 14%;
+}
+
+.title div {
+    position: absolute;
+    top: 30%;
+    left: 1.2269938650306749vw;
+}
+
+.title span {
+    font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
+    font-family: Arial, Helvetica, sans-serif;
+    color: dimgray;
+    font-weight: bold;
+}
+
+.right-side .tracks {
+    width: 100%;
+    height: 80%;
+    margin: 0 1.2269938650306749vw;
+}
+
+.tracks .track {
+    clear: left;
+    width: 97%;
+    height: 35%;
+    margin: 1.1312217194570136vh 0.6134969325153374vw;
+}
+
+.track div {
+    float: left;
+    position: relative;
+    height: 100%;
+    padding: 0;
+    margin: 1.1312217194570136vh 0.6134969325153374vw;
+}
+
+.track div * {
+    position: absolute;
+}
+
+.track .play {
+    width: 32%;
+    height: 90%;
+    background-color: rgb(247, 247, 245);
+}
+
+.play .time {
+    top: 1.583710407239819vh;
+    right: 0.8588957055214724vw;
+    color: rgba(0, 0, 0, 0.754);
+    font-family: arial, sans-serif;
+    font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
+    font-weight: bold;
+}
+
+.play .track-name {
+    top: 1.6968325791855203vh;
+    left: 0.6134969325153374vw;
+    color: rgb(0, 0, 0);
+    font-family: arial, sans-serif;
+    font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
+}
+
+.play i {
+    top: 4.524886877828054vh;
+    left: 0.6134969325153374vw;
+    color: rgb(241, 116, 6);
+    font-size: min(4.524886877828054vh, 2.4539877300613497vw);
+}
+
+.track .class-type-select {
+    width: 25%;
+}
+
+.class-type-select select {
+    width: 90%;
+    height: 2.828054298642534vh;
+    top: 28%;
+    background-color: rgb(207, 209, 209);
+    border-radius: 5px;
+}
+
+.track .date {
+    width: 25%;
+}
+
+.date span {
+    top: 30%;
+    color: rgba(0, 0, 0, 0.601);
+    font-family: arial, sans-serif;
+    font-size: min(1.8099547511312217vh, 0.9815950920245399vw);
+}
+
+.track .more {
+    width: 8%;
+}
+
+.more .fa {
+    top: 30%;
+    right: 0;
+    color: rgb(131, 131, 129);
+    font-size: min(2.48868778280543vh, 1.3496932515337423vw);
+}
