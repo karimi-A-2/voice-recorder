@@ -1,41 +1,39 @@
-/* * {
-    padding: 0;
-    margin: 0;
-} */
-
-html,
-body {
-    height: 100%;
-    margin: 0;
-    /* overflow: hidden; */
+* {
+    box-sizing: border-box;
 }
 
-.navigation-bar {
-    width: 100%;
-    height: 6%;
+html, body {
     margin: 0;
     padding: 0;
+    min-height: 100%;
+}
+/* header */
+.main-header {
     background-color: rgb(250, 252, 252);
     border-bottom: solid 1px rgb(223, 226, 225);
+    padding: 3.3936651583710407vh 0.5927682276229994vw 0.3393665158371041vh 0.5927682276229994vw;
 }
 
-.navigation-bar ul {
-    list-style-type: none;
-    overflow: hidden;
-    margin: 1.1312217194570136vh 1.2269938650306749vw 0.5656108597285068vh 1.2269938650306749vw;
+.nav {
+    border-bottom: 1px solid rgba(255, 255, 255, .3)
+}
+
+.nav li {
+    display: inline;
     padding: 0;
 }
 
-.navigation-bar li {
-    float: left;
+.nav ul {
+    margin: 0;
+    padding-left: 1.1855364552459988vw;
 }
 
-li a {
-    display: block;
-    padding: 1.1312217194570136vh 0.6134969325153374vw;
+.nav a {
+    display: inline-block;
+    padding: 1.3574660633484164vh 0.6520450503852994vw;
     color: rgb(165, 162, 167);
-    text-align: center;
     text-decoration: none;
+    text-align: center;
     font-family: arial, sans-serif;
     font-size: min(1.583710407239819vh, 0.8588957055214724vw);
     font-weight: bold;
@@ -46,26 +44,19 @@ li a:hover:not(.active) {
     background-color: #ddd;
 }
 
-.active {
+.nav .active {
     color: black;
     background-color: rgb(250, 243, 233);
     text-decoration: solid underline rgb(213, 123, 40) 2px;
 }
 
-#main {
-    width: 100%;
-    height: 94%;
-}
-
-#content {
-    height: 100%;
-    margin: 2.262443438914027vh 1.8404907975460123vw 2.262443438914027vh 1.5337423312883436vw;
-}
+/* upload-record section */
 
 .record-section {
     position: relative;
-    width: 100%;
-    height: 40%;
+    width: auto;
+    height: 35vh;
+    margin: 3.3936651583710407vh 2.074688796680498vw  0.5656108597285068vh;
     background-color: rgb(245, 248, 247);
     border: solid 1px rgb(195, 196, 193);
     border-radius: 4px;
@@ -83,7 +74,7 @@ li a:hover:not(.active) {
     border-radius: 4px;
     font-family: arial, sans-serif;
     font-size: min(1.583710407239819vh, 0.8588957055214724vw);
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .upload-btn {
@@ -97,10 +88,13 @@ li a:hover:not(.active) {
     letter-spacing: 0.03067484662576687vw;
 }
 
+/* stop-recording-section */
 .stop-recording-section {
     position: relative;
-    width: 100%;
-    height: 5%;
+    width: auto;
+    height: 5vh;
+    margin: 0 2.074688796680498vw;
+    border-bottom: 1px solid rgb(237, 237, 235)
 }
 
 .stop-recording-section div {
@@ -120,52 +114,9 @@ li a:hover:not(.active) {
     font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
 }
 
-.play-section {
-    width: 100%;
-    height: 45%;
-    border-top: solid 1px rgb(241, 241, 238);
-}
-
-.play-section div {
-    float: left;
-    height: 100%;
-}
-
-.left-side {
-    position: relative;
-    width: 33%;
-    /* height: fit-content; */
-    background-color: rgb(245, 248, 245);
-}
-
-.left-side .add-class-btn {
-    position: absolute;
-    right: 1.2269938650306749vw;
-    top: 2.262443438914027vh;
-    color: rgb(238, 118, 6);
-    background-color: white;
-}
-
-.left-side input[type=text] {
-    position: absolute;
-    width: 70%;
-    padding: 1.1312217194570136vh 0.6134969325153374vw;
-    top: 18%;
-    right: 1.2269938650306749vw;
-    font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
-}
-
-/*  */
-.class-checkbox {
-    position: absolute;
-    top: 20%;
-    left: 3%;
-    /* height: 100%; */
-}
-
-/* copied from w3schools how to */
-/* The container */
+/* checkbox: copied from w3schools how to */
 .checkbox-container {
+    /* The container */
     display: block;
     position: relative;
     padding-left: 2.147239263803681vw;
@@ -179,8 +130,8 @@ li a:hover:not(.active) {
     user-select: none;
 }
 
-/* Hide the browser's default checkbox */
 .checkbox-container input {
+    /* Hide the browser's default checkbox */
     position: absolute;
     opacity: 0;
     cursor: pointer;
@@ -188,8 +139,8 @@ li a:hover:not(.active) {
     width: 0;
 }
 
-/* Create a custom checkbox */
 .checkmark {
+    /* Create a custom checkbox */
     position: absolute;
     top: 0;
     left: 0;
@@ -200,30 +151,30 @@ li a:hover:not(.active) {
     border: 1px solid black;
 }
 
-/* On mouse-over, add a grey background color */
 .checkbox-container:hover input~.checkmark {
+    /* On mouse-over, add a grey background color */
     background-color: #ccc;
 }
 
-/* When the checkbox is checked, add a blue background */
 .checkbox-container input:checked~.checkmark {
+    /* When the checkbox is checked, add a blue background */
     background-color: #2196F3;
 }
 
-/* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
+    /* Create the checkmark/indicator (hidden when not checked) */
     content: "";
     position: absolute;
     display: none;
 }
 
-/* Show the checkmark when checked */
 .checkbox-container input:checked~.checkmark:after {
+    /* Show the checkmark when checked */
     display: block;
 }
 
-/* Style the checkmark/indicator */
 .checkbox-container .checkmark:after {
+    /* Style the checkmark/indicator */
     left: 0.36809815950920244vw;
     top: 0.22624434389140272vh;
     width: 0.3067484662576687vw;
@@ -235,70 +186,110 @@ li a:hover:not(.active) {
     transform: rotate(45deg);
 }
 
-/*  */
+/* play-section */
+.play-section {
+    display: flex;
+    align-items: flex-start;
+    margin: 0  2.074688796680498vw;
+}
+
+/* left-side */
+.left-side {
+    flex: 1;
+    position: relative;
+    background-color: rgb(245, 248, 245);
+}
+
+.left-side .class-checkbox {
+    margin: 2.262443438914027vh 1.1855364552459988vw;
+    padding-top: 6.787330316742081vh;
+}
+
+.left-side .add-class-btn {
+    position: absolute;
+    right: 1.2269938650306749vw;
+    top: 2.262443438914027vh;
+    color: rgb(238, 118, 6);
+    background-color: white;
+}
+
+.left-side input[type=text] {
+    position: absolute;
+    width: 22vw;
+    padding: 1.1312217194570136vh 0.6134969325153374vw;
+    top: 8vh;
+    right: 1.2269938650306749vw;
+    font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
+}
 
 #class-types {
     position: absolute;
-    top: 6%;
-    left: 3%;
+    top: 2vh;
+    left: 1vw;
     font-size: min(2.3755656108597285vh, 1.2883435582822085vw);
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* right-side */
 .right-side {
-    width: 67%;
+    flex: 2;
 }
 
+/* title bar */
 .right-side .title {
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background-color: rgb(247, 247, 245);
     margin: 2.262443438914027vh 1.2269938650306749vw 0 1.2269938650306749vw;
-    width: 100%;
-    height: 14%;
-}
-
-.title div {
-    position: absolute;
-    top: 30%;
-    left: 1.2269938650306749vw;
+    height: 6vh;
 }
 
 .title span {
+    padding: 0 4.149377593360996vw 0 1.1855364552459988vw;
     font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
     font-family: Arial, Helvetica, sans-serif;
     color: dimgray;
     font-weight: bold;
 }
 
+/* tracks */
 .right-side .tracks {
-    width: 100%;
-    height: 80%;
-    margin: 0 1.2269938650306749vw;
+    margin: 2.262443438914027vh 1.2269938650306749vw 0 1.8269938650306749vw;
 }
 
 .tracks .track {
-    clear: left;
-    width: 97%;
-    height: 35%;
-    margin: 1.1312217194570136vh 0.6134969325153374vw;
+    display: flex;
+    height: 11vh;
+    align-items: center;
+    justify-content: flex-start;
 }
 
-.track div {
-    float: left;
+/* play section */
+.track .play {
     position: relative;
-    height: 100%;
-    padding: 0;
-    margin: 1.1312217194570136vh 0.6134969325153374vw;
+    background-color: rgb(247, 247, 245);
+    height: 9vh;
+    width: 17vw;
 }
 
-.track div * {
+.track .play * {
     position: absolute;
 }
 
-.track .play {
-    width: 32%;
-    height: 90%;
-    background-color: rgb(247, 247, 245);
+.play .track-name {
+    top: 0.696833vh;
+    left: 0.6134969325153374vw;
+    color: rgb(0, 0, 0);
+    font-family: arial, sans-serif;
+    font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
+}
+
+.play .fa-play-circle {
+    top: 3.224887vh;
+    left: 0.6134969325153374vw;
+    color: rgb(241, 116, 6);
+    font-size: min(4.524886877828054vh, 2.4539877300613497vw);
 }
 
 .play .time {
@@ -308,53 +299,40 @@ li a:hover:not(.active) {
     font-family: arial, sans-serif;
     font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
     font-weight: bold;
-}
+}        
 
-.play .track-name {
-    top: 1.6968325791855203vh;
-    left: 0.6134969325153374vw;
-    color: rgb(0, 0, 0);
-    font-family: arial, sans-serif;
-    font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
-}
-
-.play i {
-    top: 4.524886877828054vh;
-    left: 0.6134969325153374vw;
-    color: rgb(241, 116, 6);
-    font-size: min(4.524886877828054vh, 2.4539877300613497vw);
-}
-
+/* class type select section */
 .track .class-type-select {
     width: 25%;
+    margin-left: 1vw;
 }
 
 .class-type-select select {
     width: 90%;
     height: 2.828054298642534vh;
-    top: 28%;
     background-color: rgb(207, 209, 209);
     border-radius: 5px;
 }
 
+/* date section */
 .track .date {
     width: 25%;
+    margin-left: 2vw;
 }
 
 .date span {
-    top: 30%;
     color: rgba(0, 0, 0, 0.601);
     font-family: arial, sans-serif;
     font-size: min(1.8099547511312217vh, 0.9815950920245399vw);
 }
 
+/* more section */
 .track .more {
-    width: 8%;
+    width: 15%;
+    text-align: center;
 }
 
-.more .fa {
-    top: 30%;
-    right: 0;
+.more .fa-ellipsis-v {
     color: rgb(131, 131, 129);
     font-size: min(2.48868778280543vh, 1.3496932515337423vw);
 }
