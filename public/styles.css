@@ -75,6 +75,7 @@ li a:hover:not(.active) {
     font-family: arial, sans-serif;
     font-size: min(1.583710407239819vh, 0.8588957055214724vw);
     font-weight: 500;
+    cursor: pointer;
 }
 
 .upload-btn {
