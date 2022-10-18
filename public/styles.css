@@ -337,3 +337,84 @@ li a:hover:not(.active) {
     color: rgb(131, 131, 129);
     font-size: min(2.48868778280543vh, 1.3496932515337423vw);
 }
+
+/* overlay */
+.overlay {
+	display: flex;
+	justify-content: center;
+	position: fixed;
+	top: -100vh;
+	bottom: 100vh;
+	left: 0;
+	right: 0;
+	background: rgb(0 0 0 / 80%);
+	transition: opacity 500ms, top 300ms, bottom 300ms;
+	visibility: hidden;
+}
+.overlay:target {
+	visibility: visible;
+	top: 0;
+	bottom: 0;
+}
+/* close button */
+.overlay .close {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	transition: all 200ms;
+	font-size: 30px;
+	font-weight: bold;
+	text-decoration: none;
+	color: white;
+}
+.overlay .close:hover {
+	color: rgba(255, 255, 255, 0.577);
+}
+
+/* wrapper */
+.wrapper {
+	margin: auto;
+	padding: 30px;
+	background: white;
+	border-radius: 5px;
+	width: 30%;
+	transition: all 5s ease-in-out;
+}
+.wrapper h2 {
+	margin-top: 0;
+	color: #333;
+}
+.wrapper .content {
+	max-height: 30%;
+	overflow: auto;
+}
+
+/*form*/
+.container {
+	border-radius: 5px;
+	padding: 20px 0;
+}
+form label {
+	font-weight: 500;
+	letter-spacing: 3px;
+}
+form input[type=text] {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	margin-top: 6px;
+	margin-bottom: 16px;
+	resize: vertical;
+}
+form input[type="submit"] {
+	background-color: #413b3b;
+	color: #fff;
+	padding: 15px 50px;
+	border: none;
+	border-radius: 50px;
+	cursor: pointer;
+	font-size: 15px;
+	letter-spacing: 3px;
+}
