@@ -7,22 +7,66 @@ if (document.readyState == 'loading') {
 }
 
 var trackId = 1;
-var classId = 3;
 
 function ready() {
-    var uploadButton = document.getElementsByClassName('upload-btn')
-    uploadButton[0].addEventListener('click', upload)
+    var uploadBtn = document.getElementById('upload-btn')
+    uploadBtn.addEventListener('click', upload)
 
-    var recordButton = document.getElementsByClassName('record-btn')
-    recordButton[0].addEventListener('click', record)
+    var recordBtn = document.getElementById('record-btn')
+    recordBtn.addEventListener('click', record)
 
-    var addClassButton = document.getElementsByClassName('add-class-btn')
-    addClassButton[0].addEventListener('click', addClass)
+    var addClassButton = document.getElementById('add-class-btn')
+    addClassButton.addEventListener('click', addClass)
+
+    var closeModalButton = document.getElementById('close-modal-btn')
+    closeModalButton.addEventListener('click', closeModal)
+
+    var saveClassButton = document.getElementById('save-class-button')
+    saveClassButton.addEventListener('click', saveClass)
+
+    var dismissClassButton = document.getElementById('dismiss-class-button')
+    dismissClassButton.addEventListener('click', closeModal)
 }
 
 function upload(event) {
-    alert('uploading');
+    alert('upload');
     console.log("upload");
+}
+
+function saveClass(event) {
+    let inputField = document.getElementById('class-name');
+    var newClassName = inputField.value;
+    inputField.value = "";
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", '/classes/new', true);
+
+    //Send the proper header information along with the request
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            console.log(`add ${newClassName} to classes`);
+
+            let label = document.createElement('label')
+            label.classList.add('checkbox-container')
+            let continer = document.getElementsByClassName('class-checkbox')[0];
+
+            // div class="class-checkbox"
+            let labelContent = `
+            ${newClassName}
+            <input type="checkbox" checked="checked">
+            <span class="checkmark"></span>
+            `
+            label.innerHTML = labelContent
+            continer.append(label)
+        }
+    }
+    xhr.send(JSON.stringify({
+        value: newClassName
+    }));
+
+    closeModal();
 }
 
 function record(event) {
@@ -59,17 +103,11 @@ function record(event) {
 }
 
 function addClass(event) {
-    let checkbox = document.createElement('label')
-    checkbox.classList.add('checkbox-container')
-    let continer = document.getElementsByClassName('class-checkbox')[0];
-    className = 'C' + classId
-    checkboxContent = `
-    ${className}
-    <input type="checkbox" checked="checked">
-    <span class="checkmark"></span>
-    `
-    checkbox.innerHTML = checkboxContent
-    continer.append(checkbox)
-    console.log("class " + classId + " added");
-    classId += 1
+    let addClassModal = document.getElementById('add-class-modal')
+    addClassModal.style.visibility = "visible"
+}
+
+function closeModal(event) {
+    let addClassModal = document.getElementById('add-class-modal')
+    addClassModal.style.visibility = "hidden"
 }

@@ -2,11 +2,13 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     min-height: 100%;
 }
+
 /* header */
 .main-header {
     background-color: rgb(250, 252, 252);
@@ -56,7 +58,7 @@ li a:hover:not(.active) {
     position: relative;
     width: auto;
     height: 35vh;
-    margin: 3.3936651583710407vh 2.074688796680498vw  0.5656108597285068vh;
+    margin: 3.3936651583710407vh 2.074688796680498vw 0.5656108597285068vh;
     background-color: rgb(245, 248, 247);
     border: solid 1px rgb(195, 196, 193);
     border-radius: 4px;
@@ -78,12 +80,12 @@ li a:hover:not(.active) {
     cursor: pointer;
 }
 
-.upload-btn {
+.white-btn {
     color: rgb(238, 118, 6);
     background-color: white;
 }
 
-.record-btn {
+.orange-btn {
     color: white;
     background-color: rgb(238, 118, 6);
     letter-spacing: 0.03067484662576687vw;
@@ -176,7 +178,7 @@ li a:hover:not(.active) {
 
 .checkbox-container .checkmark:after {
     /* Style the checkmark/indicator */
-    left: 0.36809815950920244vw;
+    left: 0.29vw;
     top: 0.22624434389140272vh;
     width: 0.3067484662576687vw;
     height: 1.1312217194570136vh;
@@ -191,7 +193,7 @@ li a:hover:not(.active) {
 .play-section {
     display: flex;
     align-items: flex-start;
-    margin: 0  2.074688796680498vw;
+    margin: 0 2.074688796680498vw;
 }
 
 /* left-side */
@@ -206,12 +208,10 @@ li a:hover:not(.active) {
     padding-top: 6.787330316742081vh;
 }
 
-.left-side .add-class-btn {
+.left-side #add-class-btn {
     position: absolute;
     right: 1.2269938650306749vw;
     top: 2.262443438914027vh;
-    color: rgb(238, 118, 6);
-    background-color: white;
 }
 
 .left-side input[type=text] {
@@ -300,7 +300,7 @@ li a:hover:not(.active) {
     font-family: arial, sans-serif;
     font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
     font-weight: bold;
-}        
+}
 
 /* class type select section */
 .track .class-type-select {
@@ -313,6 +313,7 @@ li a:hover:not(.active) {
     height: 2.828054298642534vh;
     background-color: rgb(207, 209, 209);
     border-radius: 5px;
+    font-size: 1.8vh;
 }
 
 /* date section */
@@ -338,83 +339,65 @@ li a:hover:not(.active) {
     font-size: min(2.48868778280543vh, 1.3496932515337423vw);
 }
 
-/* overlay */
-.overlay {
-	display: flex;
-	justify-content: center;
-	position: fixed;
-	top: -100vh;
-	bottom: 100vh;
-	left: 0;
-	right: 0;
-	background: rgb(0 0 0 / 80%);
-	transition: opacity 500ms, top 300ms, bottom 300ms;
-	visibility: hidden;
+/* modal */
+.modal {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgb(0 0 0 / 80%);
+    visibility: hidden;
 }
-.overlay:target {
-	visibility: visible;
-	top: 0;
-	bottom: 0;
-}
+
 /* close button */
-.overlay .close {
-	position: absolute;
-	top: 20px;
-	left: 20px;
-	transition: all 200ms;
-	font-size: 30px;
-	font-weight: bold;
-	text-decoration: none;
-	color: white;
-}
-.overlay .close:hover {
-	color: rgba(255, 255, 255, 0.577);
+.modal .close-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+    border-radius: 50%;
 }
 
 /* wrapper */
 .wrapper {
-	margin: auto;
-	padding: 30px;
-	background: white;
-	border-radius: 5px;
-	width: 30%;
-	transition: all 5s ease-in-out;
+    margin: auto;
+    padding: 30px;
+    background: white;
+    border-radius: 5px;
+    width: 30%;
 }
+
 .wrapper h2 {
-	margin-top: 0;
-	color: #333;
+    margin-top: 0;
+    color: #333;
+    font-family: arial, sans-serif;
 }
-.wrapper .content {
-	max-height: 30%;
-	overflow: auto;
+
+.wrapper .container {
+    max-height: 30%;
+    overflow: auto;
 }
 
 /*form*/
-.container {
-	border-radius: 5px;
-	padding: 20px 0;
+.container label {
+    font-family: arial, sans-serif;
+    font-size: min(1.683710407239819vh, 0.9588957055214724vw);
+    font-weight: bold;
 }
-form label {
-	font-weight: 500;
-	letter-spacing: 3px;
-}
-form input[type=text] {
-	width: 100%;
-	padding: 12px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box;
-	margin-top: 6px;
-	margin-bottom: 16px;
-	resize: vertical;
-}
-form input[type="submit"] {
-	background-color: #413b3b;
-	color: #fff;
-	padding: 15px 50px;
-	border: none;
-	border-radius: 50px;
-	cursor: pointer;
-	font-size: 15px;
-	letter-spacing: 3px;
+
+.container input[type=text] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
 }
