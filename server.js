@@ -30,6 +30,18 @@ app.get('/data', function (req, res) {
     })
 })
 
+app.post('/data', function (req, res) {
+    fs.writeFile("./data.json", JSON.stringify(req.body, null, 4), err => {
+        if (err) {
+            console.log("Error writing file:", err);
+            res.sendStatus(400);  // todo: find correct status code
+        } else {
+            res.sendStatus(200);
+        }
+        res.end();
+    });
+})
+
 app.post('/classes/new', function (req, res) {
     let className = req.body.value
     fs.readFile('data.json', function (error, data) {

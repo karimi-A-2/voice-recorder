@@ -1,28 +1,33 @@
 console.log("Running...");
-
-if (document.readyState == 'loading') {
-    document.addEventListener('DOMContentLoaded', ready)
-} else {
-    ready()
-}
 var data;
+getData();
+
 function getData() {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", '/data', true);
-    xhr.onreadystatechange = () => {  // here we define what happens when readystate is changed (response hase come)
+    xhr.onreadystatechange = () => {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
             data = JSON.parse(xhr.response)
-            console.log(data);  // this is the demanded object because it executes when data is loaded
             updateTrackList();
+            addListners();
         }
     }
     xhr.send();
 }
 
-function ready() {
-    getData();
-    // console.log(data);  // this is undefined because get data execute line by line but and takes 1ms for example but response comes 2s later 
+function postData() {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", '/data', true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            console.log('data updated');
+        }
+    }
+    xhr.send(JSON.stringify(data));
+}
 
+function addListners() {
     var uploadBtn = document.getElementById('upload-btn')
     uploadBtn.addEventListener('click', upload)
 
@@ -48,6 +53,12 @@ function ready() {
 
     var dismissClassButton = document.getElementById('dismiss-class-button')
     dismissClassButton.addEventListener('click', closeAddClassModal)
+
+    var classSelects = document.querySelectorAll(".class-type-select select")
+
+    classSelects.forEach(element => {
+        element.addEventListener('change', changeClass)
+    });
 }
 
 function upload(event) {
@@ -83,13 +94,15 @@ function closeAddClassModal(event) {
 }
 
 function saveAndStop(event) {
+    let now = new Date()
+    let id = now.getTime()
     let trackName = document.getElementById('recording-name').value
     let trackClass = document.getElementById('recording-class').value
     let trackTime = "00:10"
-    let now = new Date()
     let trackDate = `${now.getFullYear()}-${now.getMonth()}-${now.getDay()} ${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`
 
     let newTrack = {
+        id: id,
         name: trackName,
         class: trackClass,
         time: trackTime,
@@ -112,7 +125,7 @@ function saveAndStop(event) {
 }
 
 function updateTrackList() {
-    let container = document.getElementsByClassName('tracks')[0];
+    let container = document.querySelector('.tracks');
     container.innerHTML = "";
     data.tracks.forEach(track => {
         let trackDOM = document.createElement('div');
@@ -137,6 +150,7 @@ function updateTrackList() {
         </div>
         `;
         trackDOM.innerHTML = trackContent;
+        trackDOM.dataset.id = track.id;
         let selecContainer = trackDOM.querySelector("div.class-type-select select");
         data.classes.forEach(element => {
             let optionDOM = document.createElement('option');
@@ -191,4 +205,18 @@ function updateClassList() {
         label.innerHTML = labelContent;
         continer.append(label);
     });
+}
+
+function changeClass (event) {
+    let newClassName = event.target.value;
+    let trackId = event.target.parentElement.parentElement.dataset.id;
+    updateTrack(trackId, newClassName)
+    function updateTrack(id, newClassName) {
+        data.tracks.forEach(element => {
+            if (element.id == id) {
+                element.class = newClassName;
+            }
+        });
+    }
+    postData();
 }
