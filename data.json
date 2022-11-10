@@ -3,95 +3,32 @@
         "C1",
         "C2",
         "C3",
-        "C4",
-        "NewClass1",
-        "new",
-        "new5",
-        "kdkdkdk",
-        "heyo",
-        "aaaaa",
-        "bbbb",
-        "cccc",
-        "dddd"
+        "C4"
     ],
     "tracks": [
         {
-            "name": "giugi",
+            "name": "Track_1",
             "class": "C1",
             "time": "00:10",
             "date": "2022-09-08 10-22-14"
         },
         {
             "name": "2022-7-5 8_45_41",
-            "class": "C1",
+            "class": "C2",
             "time": "00:10",
             "date": "2022-08-12 08-45-43"
         },
         {
-            "name": "new7",
-            "class": "C1",
+            "name": "T3",
+            "class": "C4",
             "time": "00:10",
             "date": "2022-10-4 14-29-35"
         },
         {
-            "name": "name98",
+            "name": "Good",
             "class": "C3",
             "time": "00:10",
             "date": "2022-10-4 14-55-41"
-        },
-        {
-            "name": "NewRec",
-            "class": "new5",
-            "time": "00:10",
-            "date": "2022-10-4 12-20-36"
-        },
-        {
-            "name": "abcdf",
-            "class": "new5",
-            "time": "00:10",
-            "date": "2022-10-4 13-9-53"
-        },
-        {
-            "name": "okey",
-            "class": "C4",
-            "time": "00:10",
-            "date": "2022-10-4 13-16-26"
-        },
-        {
-            "name": "newOne",
-            "class": "C1",
-            "time": "00:10",
-            "date": "2022-10-4 15-4-33"
-        },
-        {
-            "name": "hhhh",
-            "class": "heyo",
-            "time": "00:10",
-            "date": "2022-10-4 16-38-54"
-        },
-        {
-            "name": "a",
-            "class": "C1",
-            "time": "00:10",
-            "date": "2022-10-4 16-40-55"
-        },
-        {
-            "name": "abcdddd",
-            "class": "C1",
-            "time": "00:10",
-            "date": "2022-10-4 16-41-17"
-        },
-        {
-            "name": "new2",
-            "class": "new5",
-            "time": "00:10",
-            "date": "2022-10-4 16-48-3"
-        },
-        {
-            "name": "piyaz",
-            "class": "dddd",
-            "time": "00:10",
-            "date": "2022-10-4 16-51-52"
         }
     ]
 }

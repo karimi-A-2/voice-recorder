@@ -58,6 +58,13 @@ function upload(event) {
 function record(event) {
     let saveRecordingModal = document.getElementById('save-recording-modal');
     saveRecordingModal.style.visibility = "visible";
+    let selecContainer = saveRecordingModal.querySelector("select");
+    selecContainer.innerHTML = ""
+    data.classes.forEach(element => {
+        let optionDOM = document.createElement('option');
+        optionDOM.innerHTML = element;
+        selecContainer.append(optionDOM);
+    });
 }
 
 function closeSaveRecordingModal(event) {
@@ -155,7 +162,7 @@ function saveClass(event) {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
             data.classes.push(newClassName)
             updateClassList()
-            // updateTrackList()
+            updateTrackList()
             console.log(`add ${newClassName} to classes`);
         }
     }
@@ -168,7 +175,9 @@ function saveClass(event) {
 
 function updateClassList() {
     let continer = document.getElementsByClassName('class-checkbox')[0];
-    continer.innerHTML = "";
+    while(continer.childElementCount > 1) {
+        continer.removeChild(continer.lastChild)
+    }
     data.classes.forEach(element => {
         let label = document.createElement('label');
         label.classList.add('checkbox-container');
