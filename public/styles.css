@@ -206,6 +206,9 @@ li a:hover:not(.active) {
 .left-side .class-checkbox {
     margin: 2.262443438914027vh 1.1855364552459988vw;
     padding-top: 6.787330316742081vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .left-side #add-class-btn {
@@ -392,6 +395,17 @@ li a:hover:not(.active) {
 }
 
 .container input[type=text] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+}
+
+.container select {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;

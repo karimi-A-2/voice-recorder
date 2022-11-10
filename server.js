@@ -13,7 +13,6 @@ app.get('/', function (req, res) {
         if (error) {
             res.status(500).end()
         } else {
-            res.body = data
             res.render('app.ejs', {
                 data: JSON.parse(data)
             })
@@ -21,8 +20,17 @@ app.get('/', function (req, res) {
     })
 })
 
+app.get('/data', function (req, res) {
+    fs.readFile('data.json', function (error, data) {
+        if (error) {
+            res.status(500).end();
+        } else {
+            res.send(data);
+        }
+    })
+})
+
 app.post('/classes/new', function (req, res) {
-    console.log(req.body);
     let className = req.body.value
     fs.readFile('data.json', function (error, data) {
         if (error) {
@@ -33,12 +41,31 @@ app.post('/classes/new', function (req, res) {
             fs.writeFile("./data.json", JSON.stringify(data, null, 4), err => {
                 if (err) {
                     console.log("Error writing file:", err);
-                    res.sendStatus(400);
-                    res.end();
+                    res.sendStatus(400);  // todo: find correct status code
                 } else {
                     res.sendStatus(200);
-                    res.end();
                 }
+                res.end();
+            });
+        }
+    })
+})
+
+app.post('/tracks/new', function (req, res) {
+    fs.readFile('data.json', function (error, data) {
+        if (error) {
+            res.status(500).end()
+        } else {
+            var data = JSON.parse(data);
+            data.tracks.push(req.body);  // here req.body is object
+            fs.writeFile("./data.json", JSON.stringify(data, null, 4), err => {
+                if (err) {
+                    console.log("Error writing file:", err);
+                    res.sendStatus(400);  // todo: find correct status code
+                } else {
+                    res.sendStatus(200);
+                }
+                res.end();
             });
         }
     })

@@ -103,10 +103,31 @@
         <div class="wrapper">
             <h2>Class</h2>
             <div class="container">
-                <label for="name">Name</label>
+                <label for="class-name">Name</label>
                 <input type="text" id="class-name" name="className" placeholder="Class Name..">
                 <button class="btn orange-btn" id="save-class-button">Save</button>
                 <button class="btn white-btn" id="dismiss-class-button">Dismiss</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="save-recording-modal">
+        <button class="close-btn" id="close-modal-btn-2">&times;</button>
+        <div class="wrapper">
+            <h2>Save recorded sound</h2>
+            <div class="container">
+                <label for="recording-name">Name</label>
+                <input type="text" id="recording-name" name="recordingName" placeholder="recording name..">
+                <label for="recording-name">Class type</label>
+                <select id="recording-class" name="classes">
+                    <% data.classes.forEach(element=> { %>
+                        <option value="<%= element %>">
+                            <%= element %>
+                        </option>
+                        <% }) %>
+                </select>
+                <button class="btn white-btn" id="save-and-stop-btn">Save & Stop</button>
+                <button class="btn orange-btn" id="save-and-continue-btn">Save & Continue</button>
             </div>
         </div>
     </div>
