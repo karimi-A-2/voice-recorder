@@ -53,9 +53,27 @@ function addListners() {
 
     var dismissClassButton = document.getElementById('dismiss-class-button')
     dismissClassButton.addEventListener('click', closeAddClassModal)
+    
+    // class-checkbox
+    var checkList = document.querySelectorAll('.class-checkbox input')
+    checkList[0].addEventListener('change', function allChange(event) {
+        let allChecked = event.target.checked;
+        console.log("all checked:");
+        console.log(allChecked);
+        let classCheckbox = document.querySelector(".class-checkbox")
+        for (let i = 1; i < classCheckbox.children.length; i++) {
+            const element = classCheckbox.children[i];
+            element.children[0].checked = allChecked
+        }
+        updateTrackList();
+    })
+    for (let i = 1; i < checkList.length; i++) {
+        const element = checkList[i];
+        element.addEventListener('change', updateTrackList)
+    }
 
+    // select
     var classSelects = document.querySelectorAll(".class-type-select select")
-
     classSelects.forEach(element => {
         element.addEventListener('change', changeClass)
     });
@@ -125,9 +143,28 @@ function saveAndStop(event) {
 }
 
 function updateTrackList() {
+    let checkedClasses = [];
+    let classCheckbox =  document.querySelector(".class-checkbox")
+    for (let i = 1; i < classCheckbox.children.length; i++) {
+        const element = classCheckbox.children[i];
+        if (element.children[0].checked == true) {
+            checkedClasses.push(data.classes[i - 1]);
+        }
+    }
+
+    let all = classCheckbox.children[0].children[0];
+    if (checkedClasses.length == data.classes.length) {
+        all.checked = true;
+    } else {
+        all.checked = false;
+    }
+
     let container = document.querySelector('.tracks');
     container.innerHTML = "";
     data.tracks.forEach(track => {
+        if (checkedClasses.includes(track.class) == false) {
+            return;
+        }
         let trackDOM = document.createElement('div');
         trackDOM.classList.add('track');
         
@@ -152,6 +189,7 @@ function updateTrackList() {
         trackDOM.innerHTML = trackContent;
         trackDOM.dataset.id = track.id;
         let selecContainer = trackDOM.querySelector("div.class-type-select select");
+        selecContainer.addEventListener('change', changeClass);
         data.classes.forEach(element => {
             let optionDOM = document.createElement('option');
             optionDOM.innerHTML = element;
