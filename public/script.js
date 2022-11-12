@@ -1,5 +1,6 @@
 console.log("Running...");
 var data;
+var chunks = [];
 getData();
 
 function getData() {
@@ -33,13 +34,17 @@ function addListners() {
 
     // record-btn
     var recordBtn = document.getElementById('record-btn')
-    recordBtn.addEventListener('click', record)
+    recordBtn.addEventListener('click', startRecord)
 
     var saveAndStopBtn = document.getElementById('save-and-stop-btn')
     saveAndStopBtn.addEventListener('click', saveAndStop)
 
     var closeSaveRecordingButton = document.getElementById('close-modal-btn-2')
     closeSaveRecordingButton.addEventListener('click', closeSaveRecordingModal)
+
+    // stop-rec btn
+    var stopBtn = document.getElementById('stop-btn')
+    stopBtn.addEventListener('click', stopRecord)
 
     // add-class-btn
     var addClassButton = document.getElementById('add-class-btn')
@@ -53,20 +58,10 @@ function addListners() {
 
     var dismissClassButton = document.getElementById('dismiss-class-button')
     dismissClassButton.addEventListener('click', closeAddClassModal)
-    
+
     // class-checkbox
     var checkList = document.querySelectorAll('.class-checkbox input')
-    checkList[0].addEventListener('change', function allChange(event) {
-        let allChecked = event.target.checked;
-        console.log("all checked:");
-        console.log(allChecked);
-        let classCheckbox = document.querySelector(".class-checkbox")
-        for (let i = 1; i < classCheckbox.children.length; i++) {
-            const element = classCheckbox.children[i];
-            element.children[0].checked = allChecked
-        }
-        updateTrackList();
-    })
+    checkList[0].addEventListener('change', allChange)
     for (let i = 1; i < checkList.length; i++) {
         const element = checkList[i];
         element.addEventListener('change', updateTrackList)
@@ -84,7 +79,18 @@ function upload(event) {
     console.log("upload");
 }
 
-function record(event) {
+function startRecord(event) {
+    document.getElementById("upload-record").style.display = 'none';  // block
+    document.getElementById("time-stop").style.display = 'flex';  // none
+}
+
+function stopRecord(event) {
+    document.getElementById("upload-record").style.display = 'block';  // block
+    document.getElementById("time-stop").style.display = 'none';  // none
+    showsaveRecordingModal()
+}
+
+function showsaveRecordingModal(event) {
     let saveRecordingModal = document.getElementById('save-recording-modal');
     saveRecordingModal.style.visibility = "visible";
     let selecContainer = saveRecordingModal.querySelector("select");
@@ -126,8 +132,8 @@ function saveAndStop(event) {
         time: trackTime,
         date: trackDate,
     };
-    const xhr = new XMLHttpRequest();
 
+    const xhr = new XMLHttpRequest();
     xhr.open("POST", '/tracks/new', true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = () => {
@@ -135,6 +141,7 @@ function saveAndStop(event) {
             data.tracks.push(newTrack);
             updateTrackList();
             console.log(`add ${newTrack.name} to tracks`);
+            alert(`Sound ${newTrack.name} saved`)
         }
     }
     xhr.send(JSON.stringify(newTrack));
@@ -142,9 +149,19 @@ function saveAndStop(event) {
     closeSaveRecordingModal();
 }
 
+function allChange(event) {
+    let allChecked = event.target.checked;
+    let classCheckbox = document.querySelector(".class-checkbox")
+    for (let i = 1; i < classCheckbox.children.length; i++) {
+        const element = classCheckbox.children[i];
+        element.children[0].checked = allChecked
+    }
+    updateTrackList();
+}
+
 function updateTrackList() {
     let checkedClasses = [];
-    let classCheckbox =  document.querySelector(".class-checkbox")
+    let classCheckbox = document.querySelector(".class-checkbox")
     for (let i = 1; i < classCheckbox.children.length; i++) {
         const element = classCheckbox.children[i];
         if (element.children[0].checked == true) {
@@ -167,7 +184,7 @@ function updateTrackList() {
         }
         let trackDOM = document.createElement('div');
         trackDOM.classList.add('track');
-        
+
         let trackContent = `
         <div class="play">
             <span class="track-name">${track.name}</span>
@@ -227,25 +244,25 @@ function saveClass(event) {
 
 function updateClassList() {
     let continer = document.getElementsByClassName('class-checkbox')[0];
-    while(continer.childElementCount > 1) {
+    while (continer.childElementCount > 1) {
         continer.removeChild(continer.lastChild)
     }
     data.classes.forEach(element => {
         let label = document.createElement('label');
         label.classList.add('checkbox-container');
-    
-        // div class="class-checkbox"
+
         let labelContent = `
                 ${element}
                 <input type="checkbox" checked="checked">
                 <span class="checkmark"></span>
                 `;
         label.innerHTML = labelContent;
+        label.children[0].addEventListener('change', updateTrackList);
         continer.append(label);
     });
 }
 
-function changeClass (event) {
+function changeClass(event) {
     let newClassName = event.target.value;
     let trackId = event.target.parentElement.parentElement.dataset.id;
     updateTrack(trackId, newClassName)

@@ -6,7 +6,9 @@ app.use(express.static("public"))
 
 app.set('view engine', 'ejs')
 app.use(express.json())   // when posting json information fetch from client to sever
-// app.use(express.urlencoded({ extended: true }))  // this allows us to access information coming from form
+app.use(express.urlencoded({ extended: true }))  // this allows us to access information coming from form
+
+const port = process.env.PORT || 4000;
 
 app.get('/', function (req, res) {
     fs.readFile('data.json', function (error, data) {
@@ -83,4 +85,6 @@ app.post('/tracks/new', function (req, res) {
     })
 })
 
-app.listen(4000);
+app.listen(port, () => {
+    console.log(`App listening at http://localhost:${port}`);
+});

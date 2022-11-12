@@ -64,10 +64,29 @@ li a:hover:not(.active) {
     border-radius: 4px;
 }
 
-.record-section div {
-    position: absolute;
-    top: 45%;
-    left: 40%;
+.record-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.record-section #time-stop {
+    display: none;  /* flext */
+    align-items: center;
+}
+
+.record-section span#time {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: white;
+    width: 8.5vw;
+    height: 8.5vw;
+    border-radius: 50%;
+    color: darkorange;
+    font-family: arial, sans-serif;
+    font-size: 1.2vw;
+    font-weight: bold;
 }
 
 .btn {
@@ -89,6 +108,11 @@ li a:hover:not(.active) {
     color: white;
     background-color: rgb(238, 118, 6);
     letter-spacing: 0.03067484662576687vw;
+}
+
+.red-btn {
+    background-color: rgb(220, 72, 85);
+    margin-left: 3vw;
 }
 
 /* stop-recording-section */
