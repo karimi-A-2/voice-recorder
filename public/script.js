@@ -1,6 +1,8 @@
 console.log("Running...");
 var data;
 var chunks = [];
+var mediaRecorder = null;
+var currentTrackDate;
 getData();
 
 function getData() {
@@ -82,9 +84,51 @@ function upload(event) {
 function startRecord(event) {
     document.getElementById("upload-record").style.display = 'none';  // block
     document.getElementById("time-stop").style.display = 'flex';  // none
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('Your browser does not support recording!');
+        return;
+    }
+    // start recording
+    navigator.mediaDevices.getUserMedia({
+        audio: true,
+    })
+        .then((stream) => {
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+            mediaRecorder.ondataavailable = (e) => {
+                chunks.push(e.data);
+            };
+            mediaRecorder.onstop = () => {
+                currentTrackDate = new Date();
+                audioBlob = new Blob(chunks, { type: 'audio/mp3' });
+                chunks = [];
+
+                const formData = new FormData();
+                formData.append('audio', audioBlob, `${currentTrackDate.getTime()}.mp3`);
+                fetch('/record', {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then(() => {
+                        console.log(`recording ${currentTrackDate.getTime()}.mp3 added`);
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        alert('An error occurred, please try again later');
+                    });
+            };
+        })
+        .catch((err) => {
+            alert(`The following error occurred: ${err}`);
+        });
 }
 
 function stopRecord(event) {
+    mediaRecorder.stop();
     document.getElementById("upload-record").style.display = 'block';  // block
     document.getElementById("time-stop").style.display = 'none';  // none
     showsaveRecordingModal()
@@ -118,7 +162,7 @@ function closeAddClassModal(event) {
 }
 
 function saveAndStop(event) {
-    let now = new Date()
+    let now = currentTrackDate
     let id = now.getTime()
     let trackName = document.getElementById('recording-name').value
     let trackClass = document.getElementById('recording-class').value
@@ -189,6 +233,7 @@ function updateTrackList() {
         <div class="play">
             <span class="track-name">${track.name}</span>
             <i class="fa fa-play-circle"></i>
+            <audio src="/${track.id}.mp3"></audio>
             <span class="time">${track.time}</span>
         </div>
         <div class="class-type-select">
@@ -205,6 +250,26 @@ function updateTrackList() {
         `;
         trackDOM.innerHTML = trackContent;
         trackDOM.dataset.id = track.id;
+
+        trackDOM.children[0].children[1].addEventListener('click', (event) => {
+            let faDOM = event.target;
+            let audio = event.target.nextElementSibling;
+            audio.onplay = () => {
+                faDOM.classList.replace('fa-play-circle', 'fa-pause-circle')
+            }
+            // audio.onended = () => {
+            //     faDOM.classList.replace('fa-pause-circle', 'fa-play-circle');
+            // }
+            audio.onpause = () => {
+                faDOM.classList.replace('fa-pause-circle', 'fa-play-circle');
+            }
+            if (audio.paused) {
+                audio.play()
+            } else {
+                audio.pause()
+            }
+        })
+
         let selecContainer = trackDOM.querySelector("div.class-type-select select");
         selecContainer.addEventListener('change', changeClass);
         data.classes.forEach(element => {
@@ -215,6 +280,7 @@ function updateTrackList() {
             }
             selecContainer.append(optionDOM);
         });
+
         container.append(trackDOM);
     });
 }

@@ -313,7 +313,7 @@ li a:hover:not(.active) {
     font-size: min(1.9230769230769231vh, 1.0429447852760736vw);
 }
 
-.play .fa-play-circle {
+.play .fa {
     top: 3.224887vh;
     left: 0.6134969325153374vw;
     color: rgb(241, 116, 6);

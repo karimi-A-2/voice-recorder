@@ -1,9 +1,20 @@
 const express = require('express');
 const app = express();
 const fs = require('fs')
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination(req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename(req, file, cb) {
+        cb(null, file.originalname);
+    },
+});
+const upload = multer({ storage });
 
 app.use(express.static("public"))
-
+app.use(express.static('uploads'));
 app.set('view engine', 'ejs')
 app.use(express.json())   // when posting json information fetch from client to sever
 app.use(express.urlencoded({ extended: true }))  // this allows us to access information coming from form
@@ -84,6 +95,10 @@ app.post('/tracks/new', function (req, res) {
         }
     })
 })
+
+app.post('/record', upload.single('audio'), (req, res) => {
+    res.json({ success: true })
+});
 
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`);
