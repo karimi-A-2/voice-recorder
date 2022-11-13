@@ -13,11 +13,11 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-app.use(express.static("public"))
+app.use(express.static("public"));
 app.use(express.static('uploads'));
-app.set('view engine', 'ejs')
-app.use(express.json())   // when posting json information fetch from client to sever
-app.use(express.urlencoded({ extended: true }))  // this allows us to access information coming from form
+app.set('view engine', 'ejs');
+app.use(express.json());   // when posting json information fetch from client to sever
+app.use(express.urlencoded({ extended: true }));  // this allows us to access information coming from form
 
 const port = process.env.PORT || 4000;
 
@@ -94,7 +94,7 @@ app.post('/tracks/new', function (req, res) {
             });
         }
     })
-})
+});
 
 app.post('/record', upload.single('audio'), (req, res) => {
     res.json({ success: true })

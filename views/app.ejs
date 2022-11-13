@@ -30,12 +30,12 @@
     <div class="stop-recording-section">
         <div>
             <label class="checkbox-container">Automatically stop recording after
-                <input type="checkbox" checked="checked">
+                <input type="checkbox" id="stop-rec-checkbox" checked="checked">
                 <span class="checkmark"></span>
             </label>
 
-            <input type="number" id="num-seconds" min="0" max="60" value="6">
-            <label for="num-seconds">seconds</label>
+            <input type="number" id="stop-rec-seconds" min="1" max="60" value="5">
+            <label for="stop-rec-seconds">seconds</label>
         </div>
     </div>
     <div class="play-section">

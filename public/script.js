@@ -1,8 +1,9 @@
 console.log("Running...");
 var data;
 var chunks = [];
+var audioBlob;
 var mediaRecorder = null;
-var currentTrackDate;
+var recDate;
 getData();
 
 function getData() {
@@ -82,9 +83,6 @@ function upload(event) {
 }
 
 function startRecord(event) {
-    document.getElementById("upload-record").style.display = 'none';  // block
-    document.getElementById("time-stop").style.display = 'flex';  // none
-
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         alert('Your browser does not support recording!');
         return;
@@ -99,39 +97,47 @@ function startRecord(event) {
             mediaRecorder.ondataavailable = (e) => {
                 chunks.push(e.data);
             };
+            mediaRecorder.onstart = () => {
+                let timer = 0;
+                let timeDOM = document.getElementById('time');
+                console.log(timeDOM);
+                setInterval(() => {
+                    timer++;
+                    timeDOM.innerHTML = `${(0)}:${timer % 60}`
+                }, 1000);
+
+                document.getElementById("upload-record").style.display = 'none';  // block
+                document.getElementById("time-stop").style.display = 'flex';  // none
+
+                let stopRecCheckBox = document.getElementById('stop-rec-checkbox');
+                if (stopRecCheckBox.checked) {
+                    let stopRecSeconds = document.getElementById('stop-rec-seconds');
+                    let timeout = parseInt(stopRecSeconds.value) * 1000;
+                    console.log(timeout);
+                    setTimeout(() => {
+                        if (mediaRecorder.state == 'recording') {
+                            mediaRecorder.stop();
+                        }
+                    }, timeout);
+                }
+            }
             mediaRecorder.onstop = () => {
-                currentTrackDate = new Date();
+                recDate = new Date();
                 audioBlob = new Blob(chunks, { type: 'audio/mp3' });
                 chunks = [];
 
-                const formData = new FormData();
-                formData.append('audio', audioBlob, `${currentTrackDate.getTime()}.mp3`);
-                fetch('/record', {
-                    method: 'POST',
-                    body: formData,
-                })
-                    .then((response) => {
-                        return response.json();
-                    })
-                    .then(() => {
-                        console.log(`recording ${currentTrackDate.getTime()}.mp3 added`);
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        alert('An error occurred, please try again later');
-                    });
+                document.getElementById("upload-record").style.display = 'block';  // block
+                document.getElementById("time-stop").style.display = 'none';  // none
+                showsaveRecordingModal();
             };
         })
         .catch((err) => {
-            alert(`The following error occurred: ${err}`);
+            console.error(`The following error occurred: ${err}`);
         });
 }
 
 function stopRecord(event) {
     mediaRecorder.stop();
-    document.getElementById("upload-record").style.display = 'block';  // block
-    document.getElementById("time-stop").style.display = 'none';  // none
-    showsaveRecordingModal()
 }
 
 function showsaveRecordingModal(event) {
@@ -162,12 +168,28 @@ function closeAddClassModal(event) {
 }
 
 function saveAndStop(event) {
-    let now = currentTrackDate
-    let id = now.getTime()
+    const formData = new FormData();
+    formData.append('audio', audioBlob, `${recDate.getTime()}.mp3`);
+    fetch('/record', {
+        method: 'POST',
+        body: formData,
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then(() => {
+            console.log(`recording ${recDate.getTime()}.mp3 added`);
+        })
+        .catch((err) => {
+            console.error(err);
+            console.error('An error occurred, please try again later');
+        });
+
+    let id = recDate.getTime()
     let trackName = document.getElementById('recording-name').value
     let trackClass = document.getElementById('recording-class').value
     let trackTime = "00:10"
-    let trackDate = `${now.getFullYear()}-${now.getMonth()}-${now.getDay()} ${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`
+    let trackDate = `${recDate.getFullYear()}-${recDate.getMonth()}-${recDate.getDay()} ${recDate.getHours()}-${recDate.getMinutes()}-${recDate.getSeconds()}`
 
     let newTrack = {
         id: id,
@@ -185,7 +207,6 @@ function saveAndStop(event) {
             data.tracks.push(newTrack);
             updateTrackList();
             console.log(`add ${newTrack.name} to tracks`);
-            alert(`Sound ${newTrack.name} saved`)
         }
     }
     xhr.send(JSON.stringify(newTrack));
