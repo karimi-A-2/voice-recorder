@@ -19,6 +19,7 @@
     </header>
     <div class="record-section">
         <div id="upload-record">
+            <input type="file" name="file" id="input-file" hidden="hidden">
             <button id="upload-btn" class="btn white-btn">Upload a file</button>
             <button id="record-btn" class="btn orange-btn">Record now</button>
         </div>
@@ -77,7 +78,7 @@
                             </span>
                             <i class="fa fa-play-circle"></i>
                             <span class="time">
-                                <%= element.time %>
+                                <%= `${parseInt(element.time / 60)}:${parseInt(element.time % 60)}` %>
                             </span>
                         </div>
                         <div class="class-type-select">

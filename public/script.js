@@ -4,6 +4,9 @@ var chunks = [];
 var audioBlob;
 var mediaRecorder = null;
 var recDate;
+
+var intervalID;
+var timer;
 getData();
 
 function getData() {
@@ -11,7 +14,7 @@ function getData() {
     xhr.open("GET", '/data', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            data = JSON.parse(xhr.response)
+            data = JSON.parse(xhr.response);
             updateTrackList();
             addListners();
         }
@@ -31,55 +34,102 @@ function postData() {
     xhr.send(JSON.stringify(data));
 }
 
+var uploadRecordSection
+var timeStopSection
+var uploadBtn
+var fileInput
+var recordBtn
+var saveAndStopBtn
+var closeSaveRecordingButton
+var timeDOM
+var stopBtn
+var stopRecCheckBox
+var addClassButton
+var saveClassButton
+var closeModalButton
+var dismissClassButton
+var classCheckBoxContiner
+var checkList
+var classSelects
+var addClassModal
+var saveRecordingModal
+var recordingName
+var recordingClass
+var inputField
+
 function addListners() {
-    var uploadBtn = document.getElementById('upload-btn')
-    uploadBtn.addEventListener('click', upload)
+    uploadRecordSection = document.getElementById("upload-record");
+    timeStopSection = document.getElementById("time-stop");
+
+    uploadBtn = document.getElementById('upload-btn');
+    uploadBtn.addEventListener('click', upload);
+
+    fileInput = document.getElementById('input-file');
+    fileInput.addEventListener('change', changeFile);
 
     // record-btn
-    var recordBtn = document.getElementById('record-btn')
-    recordBtn.addEventListener('click', startRecord)
+    recordBtn = document.getElementById('record-btn');
+    recordBtn.addEventListener('click', startRecord);
 
-    var saveAndStopBtn = document.getElementById('save-and-stop-btn')
-    saveAndStopBtn.addEventListener('click', saveAndStop)
+    saveAndStopBtn = document.getElementById('save-and-stop-btn');
+    saveAndStopBtn.addEventListener('click', saveAndStop);
 
-    var closeSaveRecordingButton = document.getElementById('close-modal-btn-2')
-    closeSaveRecordingButton.addEventListener('click', closeSaveRecordingModal)
+    closeSaveRecordingButton = document.getElementById('close-modal-btn-2');
+    closeSaveRecordingButton.addEventListener('click', closeSaveRecordingModal);
+
+    timeDOM = document.getElementById('time');
 
     // stop-rec btn
-    var stopBtn = document.getElementById('stop-btn')
-    stopBtn.addEventListener('click', stopRecord)
+    stopBtn = document.getElementById('stop-btn');
+    stopBtn.addEventListener('click', stopRecord);
+
+    stopRecCheckBox = document.getElementById('stop-rec-checkbox');
 
     // add-class-btn
-    var addClassButton = document.getElementById('add-class-btn')
-    addClassButton.addEventListener('click', addClass)
+    addClassButton = document.getElementById('add-class-btn');
+    addClassButton.addEventListener('click', addClass);
 
-    var saveClassButton = document.getElementById('save-class-button')
-    saveClassButton.addEventListener('click', saveClass)
+    saveClassButton = document.getElementById('save-class-button');
+    saveClassButton.addEventListener('click', saveClass);
 
-    var closeModalButton = document.getElementById('close-modal-btn')
-    closeModalButton.addEventListener('click', closeAddClassModal)
+    closeModalButton = document.getElementById('close-modal-btn');
+    closeModalButton.addEventListener('click', closeAddClassModal);
 
-    var dismissClassButton = document.getElementById('dismiss-class-button')
-    dismissClassButton.addEventListener('click', closeAddClassModal)
+    dismissClassButton = document.getElementById('dismiss-class-button');
+    dismissClassButton.addEventListener('click', closeAddClassModal);
+
+    classCheckBoxContiner = document.querySelector('.class-checkbox');
 
     // class-checkbox
-    var checkList = document.querySelectorAll('.class-checkbox input')
-    checkList[0].addEventListener('change', allChange)
+    checkList = document.querySelectorAll('.class-checkbox input');
+    checkList[0].addEventListener('change', allChange);
     for (let i = 1; i < checkList.length; i++) {
         const element = checkList[i];
-        element.addEventListener('change', updateTrackList)
+        element.addEventListener('change', updateTrackList);
     }
 
     // select
-    var classSelects = document.querySelectorAll(".class-type-select select")
+    classSelects = document.querySelectorAll(".class-type-select select");
     classSelects.forEach(element => {
-        element.addEventListener('change', changeClass)
+        element.addEventListener('change', changeClass);
     });
+
+    addClassModal = document.getElementById('add-class-modal');
+    saveRecordingModal = document.getElementById('save-recording-modal');
+    recordingName = document.getElementById('recording-name');
+    recordingClass = document.getElementById('recording-class');
+    inputField = document.getElementById('class-name');
 }
 
 function upload(event) {
-    alert('upload');
-    console.log("upload");
+    fileInput.click();
+}
+
+function changeFile(event) {
+    var file = fileInput.files[0];
+    audioBlob = file;
+    showsaveRecordingModal();
+    recDate = new Date();
 }
 
 function startRecord(event) {
@@ -97,37 +147,36 @@ function startRecord(event) {
             mediaRecorder.ondataavailable = (e) => {
                 chunks.push(e.data);
             };
-            mediaRecorder.onstart = () => {
-                let timer = 0;
-                let timeDOM = document.getElementById('time');
-                console.log(timeDOM);
-                setInterval(() => {
+            mediaRecorder.onstart = (event) => {
+                timer = 0;
+                timeDOM.innerHTML = `${(parseInt(timer / 60))}:${timer % 60}`
+                intervalID = setInterval(() => {
                     timer++;
-                    timeDOM.innerHTML = `${(0)}:${timer % 60}`
+                    timeDOM.innerHTML = `${(parseInt(timer / 60))}:${timer % 60}`
                 }, 1000);
 
-                document.getElementById("upload-record").style.display = 'none';  // block
-                document.getElementById("time-stop").style.display = 'flex';  // none
+                uploadRecordSection.style.display = 'none';  // block
+                timeStopSection.style.display = 'flex';  // none
 
-                let stopRecCheckBox = document.getElementById('stop-rec-checkbox');
                 if (stopRecCheckBox.checked) {
                     let stopRecSeconds = document.getElementById('stop-rec-seconds');
                     let timeout = parseInt(stopRecSeconds.value) * 1000;
-                    console.log(timeout);
                     setTimeout(() => {
                         if (mediaRecorder.state == 'recording') {
                             mediaRecorder.stop();
                         }
-                    }, timeout);
+                    }, timeout + 100);
                 }
             }
-            mediaRecorder.onstop = () => {
+            mediaRecorder.onstop = (event) => {
                 recDate = new Date();
+                clearInterval(intervalID);
                 audioBlob = new Blob(chunks, { type: 'audio/mp3' });
                 chunks = [];
 
-                document.getElementById("upload-record").style.display = 'block';  // block
-                document.getElementById("time-stop").style.display = 'none';  // none
+                timeDOM.innerHTML = `${0}:${0}`;
+                uploadRecordSection.style.display = 'block';  // block
+                timeStopSection.style.display = 'none';  // none
                 showsaveRecordingModal();
             };
         })
@@ -141,10 +190,9 @@ function stopRecord(event) {
 }
 
 function showsaveRecordingModal(event) {
-    let saveRecordingModal = document.getElementById('save-recording-modal');
     saveRecordingModal.style.visibility = "visible";
-    let selecContainer = saveRecordingModal.querySelector("select");
-    selecContainer.innerHTML = ""
+    let selecContainer = saveRecordingModal.children[1].children[1].children[3];
+    selecContainer.innerHTML = "";
     data.classes.forEach(element => {
         let optionDOM = document.createElement('option');
         optionDOM.innerHTML = element;
@@ -153,23 +201,24 @@ function showsaveRecordingModal(event) {
 }
 
 function closeSaveRecordingModal(event) {
-    let saveRecordingModal = document.getElementById('save-recording-modal')
-    saveRecordingModal.style.visibility = "hidden"
+    recordingName.value = "";
+    saveRecordingModal.style.visibility = "hidden";
 }
 
 function addClass(event) {
-    let addClassModal = document.getElementById('add-class-modal')
-    addClassModal.style.visibility = "visible"
+    addClassModal.style.visibility = "visible";
 }
 
 function closeAddClassModal(event) {
-    let addClassModal = document.getElementById('add-class-modal')
-    addClassModal.style.visibility = "hidden"
+    inputField.value = "";
+    addClassModal.style.visibility = "hidden";
 }
 
 function saveAndStop(event) {
+    let id = recDate.getTime();
+    
     const formData = new FormData();
-    formData.append('audio', audioBlob, `${recDate.getTime()}.mp3`);
+    formData.append('audio', audioBlob, `${id}.mp3`);
     fetch('/record', {
         method: 'POST',
         body: formData,
@@ -178,40 +227,55 @@ function saveAndStop(event) {
             return response.json();
         })
         .then(() => {
-            console.log(`recording ${recDate.getTime()}.mp3 added`);
+
+            var getDuration = function (url, next) {
+                var _player = new Audio(url);
+                _player.addEventListener("durationchange", function (e) {
+                    if (this.duration != Infinity) {
+                        var duration = this.duration;
+                        _player.remove();
+                        next(duration);
+                    };
+                }, false);
+                _player.load();
+                _player.currentTime = 24 * 60 * 60; //fake big time
+                _player.volume = 0;
+                _player.play();
+                //waiting...
+            };
+        
+            let trackName = recordingName.value;
+            let trackClass = recordingClass.value;
+            getDuration(`/${id}.mp3`, function (duration) {
+                let trackDate = `${recDate.getFullYear()}-${recDate.getMonth()}-${recDate.getDay()} ${recDate.getHours()}-${recDate.getMinutes()}-${recDate.getSeconds()}`;
+            
+                let newTrack = {
+                    id: id,
+                    name: trackName,
+                    class: trackClass,
+                    time: duration,
+                    date: trackDate,
+                };
+
+                closeSaveRecordingModal();
+            
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", '/tracks/new', true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                        data.tracks.push(newTrack);
+                        updateTrackList();
+                        console.log(newTrack);
+                    }
+                }
+                xhr.send(JSON.stringify(newTrack));
+            });
         })
         .catch((err) => {
             console.error(err);
             console.error('An error occurred, please try again later');
         });
-
-    let id = recDate.getTime()
-    let trackName = document.getElementById('recording-name').value
-    let trackClass = document.getElementById('recording-class').value
-    let trackTime = "00:10"
-    let trackDate = `${recDate.getFullYear()}-${recDate.getMonth()}-${recDate.getDay()} ${recDate.getHours()}-${recDate.getMinutes()}-${recDate.getSeconds()}`
-
-    let newTrack = {
-        id: id,
-        name: trackName,
-        class: trackClass,
-        time: trackTime,
-        date: trackDate,
-    };
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", '/tracks/new', true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            data.tracks.push(newTrack);
-            updateTrackList();
-            console.log(`add ${newTrack.name} to tracks`);
-        }
-    }
-    xhr.send(JSON.stringify(newTrack));
-
-    closeSaveRecordingModal();
 }
 
 function allChange(event) {
@@ -219,7 +283,7 @@ function allChange(event) {
     let classCheckbox = document.querySelector(".class-checkbox")
     for (let i = 1; i < classCheckbox.children.length; i++) {
         const element = classCheckbox.children[i];
-        element.children[0].checked = allChecked
+        element.children[0].checked = allChecked;
     }
     updateTrackList();
 }
@@ -254,8 +318,8 @@ function updateTrackList() {
         <div class="play">
             <span class="track-name">${track.name}</span>
             <i class="fa fa-play-circle"></i>
-            <audio src="/${track.id}.mp3"></audio>
-            <span class="time">${track.time}</span>
+            <audio src="/${track.id}.mp3" preload="auto"></audio>
+            <span class="time">${parseInt(track.time / 60)}:${parseInt(track.time % 60)}</span>
         </div>
         <div class="class-type-select">
             <select name="classes">
@@ -276,7 +340,7 @@ function updateTrackList() {
             let faDOM = event.target;
             let audio = event.target.nextElementSibling;
             audio.onplay = () => {
-                faDOM.classList.replace('fa-play-circle', 'fa-pause-circle')
+                faDOM.classList.replace('fa-play-circle', 'fa-pause-circle');
             }
             // audio.onended = () => {
             //     faDOM.classList.replace('fa-pause-circle', 'fa-play-circle');
@@ -285,11 +349,11 @@ function updateTrackList() {
                 faDOM.classList.replace('fa-pause-circle', 'fa-play-circle');
             }
             if (audio.paused) {
-                audio.play()
+                audio.play();
             } else {
-                audio.pause()
+                audio.pause();
             }
-        })
+        });
 
         let selecContainer = trackDOM.querySelector("div.class-type-select select");
         selecContainer.addEventListener('change', changeClass);
@@ -307,18 +371,16 @@ function updateTrackList() {
 }
 
 function saveClass(event) {
-    let inputField = document.getElementById('class-name');
-    var newClassName = inputField.value;
-    inputField.value = "";
+    let newClassName = inputField.value;
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", '/classes/new', true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = () => {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            data.classes.push(newClassName)
-            updateClassList()
-            updateTrackList()
+            data.classes.push(newClassName);
+            updateClassList();
+            updateTrackList();
             console.log(`add ${newClassName} to classes`);
         }
     }
@@ -330,9 +392,8 @@ function saveClass(event) {
 }
 
 function updateClassList() {
-    let continer = document.getElementsByClassName('class-checkbox')[0];
-    while (continer.childElementCount > 1) {
-        continer.removeChild(continer.lastChild)
+    while (classCheckBoxContiner.childElementCount > 1) {
+        classCheckBoxContiner.removeChild(classCheckBoxContiner.lastChild);
     }
     data.classes.forEach(element => {
         let label = document.createElement('label');
@@ -345,20 +406,18 @@ function updateClassList() {
                 `;
         label.innerHTML = labelContent;
         label.children[0].addEventListener('change', updateTrackList);
-        continer.append(label);
+        classCheckBoxContiner.append(label);
     });
 }
 
 function changeClass(event) {
     let newClassName = event.target.value;
     let trackId = event.target.parentElement.parentElement.dataset.id;
-    updateTrack(trackId, newClassName)
-    function updateTrack(id, newClassName) {
-        data.tracks.forEach(element => {
-            if (element.id == id) {
-                element.class = newClassName;
-            }
-        });
-    }
+    data.tracks.forEach(element => {
+        if (element.id == trackId) {
+            element.class = newClassName;
+        }
+    });
     postData();
+    updateTrackList();
 }
